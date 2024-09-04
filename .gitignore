@@ -2,7 +2,7 @@
 
 # dependencies
 /node_modules
-/calender-test/node_modules
+/*/node_modules
 /.pnp
 .pnp.js
 
