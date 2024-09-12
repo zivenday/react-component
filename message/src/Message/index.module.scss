@@ -1,0 +1,22 @@
+.wrapper {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: auto;
+  max-width: 200px;
+  word-break: break-all;
+  text-wrap: wrap;
+  background-color: transparent;
+  color: #000;
+}
+
+.message {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
