@@ -1,0 +1,14 @@
+.TransParentSlider {
+  position: relative;
+  width: 240px;
+  height: 8px;
+  margin-top: 10px;
+  background-image: conic-gradient(
+    rgba(0, 0, 0, 0.06) 0 25%,
+    transparent 0 50%,
+    rgba(0, 0, 0, 0.06) 0 75%,
+    transparent 0
+  );
+  background-size: 8px 8px;
+  border-radius: calc(8px / 2);
+}
