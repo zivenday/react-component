@@ -1,0 +1,12 @@
+.slider-handle {
+  border: 2px solid #fff;
+  border-radius: 50%;
+  &-sm {
+    width: 8px;
+    height: 8px;
+  }
+  &-mini {
+    width: 5px;
+    height: 5px;
+  }
+}
