@@ -1,0 +1,10 @@
+.formItem {
+  margin-bottom: 20px;
+  &_a {
+    margin-left: 10px;
+  }
+}
+.errors {
+  position: absolute;
+  color: red;
+}
