@@ -126,14 +126,6 @@ type CompoundedComponent = InternalUploadType & {
   Drag: typeof Drag
 }
 
-type A = React.ForwardRefExoticComponent<
-  MyUploadProps<any> & {
-    children?: React.ReactNode | undefined
-  } & React.RefAttributes<any>
->
-
-type A1 = A & { Drag: typeof Drag }
-
 const Upload = MyUploader as CompoundedComponent
 
 Upload.Drag = Drag
