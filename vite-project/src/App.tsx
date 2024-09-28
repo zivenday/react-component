@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
@@ -33,3 +34,28 @@ function App() {
 }
 
 export default App
+=======
+import React from 'react'
+import { ColorPicker, Space } from 'antd'
+import Aaa from './Aaa'
+
+const Demo = () => (
+  <div>
+    <Space>
+      <Space direction="vertical">
+        <ColorPicker defaultValue="#1677ff" size="small" />
+        <ColorPicker defaultValue="#1677ff" />
+        <ColorPicker defaultValue="#1677ff" size="large" />
+      </Space>
+      <Space direction="vertical">
+        <ColorPicker defaultValue="#1677ff" size="small" showText />
+        <ColorPicker defaultValue="#1677ff" showText />
+        <ColorPicker defaultValue="#1677ff" size="large" showText />
+      </Space>
+    </Space>
+    <Aaa></Aaa>
+  </div>
+)
+
+export default Demo
+>>>>>>> 782f259593ff67031b3b7c4c23bb63b989cb06e1
