@@ -34,7 +34,7 @@ const CodeEditor: FC<CodeEditorProps> = (props) => {
     changeEvenRef.current = e
     setMergeValue(value || '')
   }
-  console.log(mergeValue)
+  // console.log(mergeValue)
   return (
     <MonacoEditor
       value={mergeValue}

@@ -31,7 +31,7 @@ const FileNameList = (props: Props) => {
   }
   const handleDel = (file: FileType) => {
     const isConfirmed = window.confirm('您确定要删除吗？')
-    console.log('ppp', isConfirmed)
+    // console.log('ppp', isConfirmed)
     if (isConfirmed) {
       // 执行删除操作
       del?.(file)

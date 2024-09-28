@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Allotment } from 'allotment'
 import 'allotment/dist/style.css'
 import CodeEditor, { FileType } from './CodeEditor'
@@ -43,8 +43,8 @@ const defaultFile = {
 }
 
 type PlayGroundProps = {
-  fileList: FileType[]
-  selectedFile: FileType
+  fileList?: FileType[]
+  selectedFile?: FileType
 }
 
 function PlayGround(props: PlayGroundProps) {
@@ -53,6 +53,7 @@ function PlayGround(props: PlayGroundProps) {
   const mergeFilelsit = fileList || defaultFileList
   const [file, setFile] = useState<FileType>(selectedFile || defaultFile)
   const fileListRef = useRef([...mergeFilelsit])
+  const fileRef = useRef(file)
 
   const getFileList = () => {
     return fileListRef.current
@@ -73,7 +74,15 @@ function PlayGround(props: PlayGroundProps) {
 
   const debounceChangeFn = useCallback(
     debounce((value) => {
-      setFile((preFile) => ({ ...preFile, value }))
+      setFile((preFile) => {
+        const index = fileListRef.current.findIndex((f) => f.path === preFile.path)
+        const newFile = { ...preFile, value }
+        if (index > -1) {
+          fileListRef.current[index] = newFile
+        }
+        console.log('pppp', newFile.path)
+        return newFile
+      })
     }, 500),
     []
   )
@@ -107,7 +116,7 @@ function PlayGround(props: PlayGroundProps) {
               <CodeEditor file={file} onChange={handleChange}></CodeEditor>
             </Allotment.Pane>
             <Allotment.Pane>
-              <Preview />
+              <Preview file={file} />
             </Allotment.Pane>
           </Allotment>
         </div>
