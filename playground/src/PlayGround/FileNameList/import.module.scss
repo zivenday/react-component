@@ -1,0 +1,9 @@
+.file-name-list {
+  background-color: var(--bg);
+  color: var(--text);
+
+  .active {
+    color: #42d392;
+    border-bottom: 3px solid #42d392;
+  }
+}

@@ -1,46 +1,18 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
+import './index.scss'
 import { Allotment } from 'allotment'
 import 'allotment/dist/style.css'
 import CodeEditor, { FileType } from './CodeEditor'
 import Preview from './Preview'
 import FileNameList from './FileNameList'
 import { PlaygroundContext } from './context'
-import importMap from './template/import-map.json?raw'
-import AppCss from './template/App.css?raw'
-import App from './template/App.tsx?raw'
-import main from './template/main.tsx?raw'
+import { ThemeContext, useThemeContext } from './ThemeContext'
+
 import { debounce } from 'lodash'
-// app 文件名
-export const APP_COMPONENT_FILE_NAME = 'App.tsx'
-// esm 模块映射文件名
-export const IMPORT_MAP_FILE_NAME = 'import-map.json'
-// app 入口文件名
-export const ENTRY_FILE_NAME = 'main.tsx'
-export const APP_STYLE_FILE_NAME = 'App.css'
+import { useMemoizedFn, fileListFromHash } from './utils'
+import { Header } from './Header'
 
-const defaultFileList = [
-  {
-    value: App,
-    path: APP_COMPONENT_FILE_NAME,
-  },
-  {
-    value: main,
-    path: ENTRY_FILE_NAME,
-  },
-  {
-    value: importMap,
-    path: IMPORT_MAP_FILE_NAME,
-  },
-  {
-    value: AppCss,
-    path: APP_STYLE_FILE_NAME,
-  },
-]
-
-const defaultFile = {
-  value: main,
-  path: ENTRY_FILE_NAME,
-}
+import { defaultFile, defaultFileList, ENTRY_FILE_NAME } from './const'
 
 type PlayGroundProps = {
   fileList?: FileType[]
@@ -49,11 +21,11 @@ type PlayGroundProps = {
 
 function PlayGround(props: PlayGroundProps) {
   const { fileList, selectedFile } = props
-
-  const mergeFilelsit = fileList || defaultFileList
-  const [file, setFile] = useState<FileType>(selectedFile || defaultFile)
-  const fileListRef = useRef([...mergeFilelsit])
-  const fileRef = useRef(file)
+  const [mergeFileList, _] = useState<FileType[]>(fileListFromHash() || fileList || defaultFileList)
+  const [file, setFile] = useState<FileType>(selectedFile! || mergeFileList.find((f) => f.path === ENTRY_FILE_NAME))
+  const fileListRef = useRef([...mergeFileList])
+  const { theme } = useThemeContext(ThemeContext)
+  //   console.log('merge', mergeFilelsit)
 
   const getFileList = () => {
     return fileListRef.current
@@ -71,44 +43,53 @@ function PlayGround(props: PlayGroundProps) {
       fileListRef.current = fileList
     }
   }
+  //注意：执行该方法的场景一定是当前更新path的文件必须是被选中的文件
+  const updateFile = useMemoizedFn((callback: any) => {
+    const cb = typeof callback === 'function' ? callback : () => callback
+    const index = fileListRef?.current?.findIndex((f) => f.path === file.path)
+    const newFile = cb(file)
+    updateFileList(newFile, index)
+  })
 
   const debounceChangeFn = useCallback(
     debounce((value) => {
       setFile((preFile) => {
-        const index = fileListRef.current.findIndex((f) => f.path === preFile.path)
         const newFile = { ...preFile, value }
-        if (index > -1) {
-          fileListRef.current[index] = newFile
-        }
-        console.log('pppp', newFile.path)
+        updateFile(newFile)
         return newFile
       })
     }, 500),
     []
   )
 
-  const handleChange = (value: any) => {
+  const handleChange = useMemoizedFn((value: any) => {
     debounceChangeFn(value)
-  }
+  })
 
-  useEffect(() => {
-    const fileIndex = fileListRef.current.findIndex((f) => f.path === file.path)
+  const updateFileList = (file: FileType, originIndex?: number) => {
+    // console.log('////----', file.path, file.value)
+    const fileIndex = originIndex || fileListRef?.current?.findIndex((f) => f.path === file.path)
     if (fileIndex > -1) {
       fileListRef.current[fileIndex] = file
     }
-  }, [file])
+  }
+
+  //   useEffect(() => {
+  //     updateFileList(file)
+  //   }, [file])
 
   const contextValue = {
     getFileList,
     add: addFile,
     del: delFile,
     setFile,
+    updateFile,
   }
 
   return (
     <PlaygroundContext.Provider value={contextValue}>
-      <div className="relative w-[100%] h-[100%]">
-        <div className="w-[100%] h-[60px] p-[3px] border-b-gray-400 !border-b-[1px] border-solid">PlayGround DEMO</div>
+      <div className={`${theme} relative w-[100%] h-[100%]`}>
+        <Header></Header>
         <div className="relative flex h-[calc(100%-60px)]" id="playground-content">
           <Allotment>
             <Allotment.Pane minSize={300}>

@@ -1,10 +1,11 @@
 import { FC, PropsWithChildren, useRef } from 'react'
-import MonacoEditor, { MonacoDiffEditor, OnMount, EditorProps } from '@monaco-editor/react'
+import MonacoEditor from '@monaco-editor/react'
 import { editor } from 'monaco-editor'
 import { setupEditor } from './setupEditor'
 import defaultContent from './defaultContent?raw'
 import { useControllableValue } from 'ahooks'
 import { fileName2Language } from '../utils'
+import { ThemeContext, useThemeContext } from '../ThemeContext'
 // console.log('///-------------', defaultContent)
 
 export interface FileType {
@@ -20,6 +21,7 @@ export interface CodeEditorProps {
 }
 const CodeEditor: FC<CodeEditorProps> = (props) => {
   const { options = {}, onChange, file } = props
+  const { theme } = useThemeContext(ThemeContext)
   const changeEvenRef = useRef<editor.IModelContentChangedEvent>()
   const [mergeValue, setMergeValue] = useControllableValue<string>(
     {
@@ -34,6 +36,7 @@ const CodeEditor: FC<CodeEditorProps> = (props) => {
     changeEvenRef.current = e
     setMergeValue(value || '')
   }
+
   // console.log(mergeValue)
   return (
     <MonacoEditor
@@ -48,6 +51,7 @@ const CodeEditor: FC<CodeEditorProps> = (props) => {
         scrollbar: {
           verticalScrollbarSize: 2,
         },
+        theme: 'vs-' + theme,
       }}
       onMount={setupEditor}
       language={file.language || fileName2Language(file.path) || 'typescript'}

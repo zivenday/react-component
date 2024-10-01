@@ -6,6 +6,7 @@ type PlaygroundContextType = {
   add: (file: FileType) => void
   del: (file: FileType) => void
   setFile: React.Dispatch<React.SetStateAction<FileType>>
+  updateFile: React.Dispatch<React.SetStateAction<FileType>>
 }
 
 export const PlaygroundContext = createContext<PlaygroundContextType | undefined>(undefined)
