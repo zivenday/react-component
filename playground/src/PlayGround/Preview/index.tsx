@@ -1,12 +1,11 @@
-import { useEffect, useRef, useState, memo } from 'react'
-import { transform } from '@babel/standalone'
+import { useEffect, useRef, useState } from 'react'
 import { FileType } from '../CodeEditor'
 
 import { PlaygroundContext, usePlaygroundContext } from '../context'
 import iframeRaw from '../template/index.html?raw'
 import Myworker from './worker?worker'
 
-import { IMPORT_MAP_FILE_NAME, ENTRY_FILE_NAME } from '../const'
+import { IMPORT_MAP_FILE_NAME } from '../const'
 interface PreviewProps {
   file: FileType
 }
