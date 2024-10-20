@@ -62,14 +62,6 @@ export function useMemoizedFn<T extends noop>(fn: T) {
   return memoizedFn.current as T
 }
 
-type test = (this?: any, ...args: any[]) => any
-
-const func: test = () => {
-  console.log(this)
-}
-
-useMemoizedFn(func)
-
 export const fileListFromHash = () => {
   const hash = window.location.hash.slice(1)
   if (isValidBase64(hash)) {
