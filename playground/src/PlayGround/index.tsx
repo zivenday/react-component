@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react'
+import { memo, useCallback, useRef, useState } from 'react'
 import './index.scss'
 import { Allotment } from 'allotment'
 import 'allotment/dist/style.css'
@@ -67,7 +67,6 @@ function PlayGround(props: PlayGroundProps) {
   })
 
   const updateFileList = (file: FileType, originIndex?: number) => {
-    // console.log('////----', file.path, file.value)
     const fileIndex = originIndex || fileListRef?.current?.findIndex((f) => f.path === file.path)
     if (fileIndex > -1) {
       fileListRef.current[fileIndex] = file

@@ -44,6 +44,7 @@ export const toShareUrl = (fileList: FileType[]) => {
 }
 
 type noop = (this: any, ...args: any[]) => any
+
 type PickFunction<T extends noop> = (this: ThisParameterType<T>, ...args: Parameters<T>) => ReturnType<T>
 export function useMemoizedFn<T extends noop>(fn: T) {
   const fnRef = useRef<T>(fn) // why not write `fnRef.current = fn`? // https://github.com/alibaba/hooks/issues/728
@@ -60,6 +61,14 @@ export function useMemoizedFn<T extends noop>(fn: T) {
 
   return memoizedFn.current as T
 }
+
+type test = (this?: any, ...args: any[]) => any
+
+const func: test = () => {
+  console.log(this)
+}
+
+useMemoizedFn(func)
 
 export const fileListFromHash = () => {
   const hash = window.location.hash.slice(1)
